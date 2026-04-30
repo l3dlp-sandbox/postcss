@@ -23,7 +23,7 @@ jobs:
           node-version: 25
           cache: pnpm
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm ci --ignore-scripts
       - name: Run tests
         run: pnpm test
   short:
@@ -47,7 +47,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm ci --ignore-scripts
       - name: Run unit tests
         run: pnpm run unit
   old:
@@ -78,7 +78,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --ignore-scripts
       - name: Downgrade TypeScript
-        run: pnpm install typescript@4
+        run: pnpm install typescript@4 --ignore-scripts
       - name: Run unit tests
         run: pnpm run old
   windows:
