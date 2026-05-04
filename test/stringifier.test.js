@@ -320,4 +320,39 @@ test('does not escape Document raws', () => {
   is(document.toString(), 'a {}</style>b {}</style>')
 })
 
+test('always calls raw to retrieve raws', () => {
+  class CustomStringifier extends Stringifier {
+    raw(node, own, detect) {
+      return `\nRAW(${node.type}, ${own}, ${detect})\n`
+    }
+  }
+  let root = new Root()
+  let rootRule = new Rule({ selector: 'a' })
+  let decl = new Declaration({ prop: 'color', value: 'black' })
+  decl.raws.before = 'BEFORE'
+  decl.raws.between = 'BETWEEN'
+  decl.raws.after = 'AFTER'
+  root.append(rootRule)
+  rootRule.append(decl)
+
+  let stringify = (node, builder) => {
+    let customStringifier = new CustomStringifier(builder)
+    customStringifier.stringify(node)
+  }
+  let result = root.toString(stringify)
+  is(result, [
+    '',
+    'RAW(rule, before, undefined)',
+    'a',
+    'RAW(rule, between, beforeOpen)',
+    '{',
+    'RAW(decl, before, undefined)',
+    'color',
+    'RAW(decl, between, colon)',
+    'black;',
+    'RAW(rule, after, undefined)',
+    '}'
+  ].join('\n'))
+})
+
 test.run()
