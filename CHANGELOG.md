@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 8.5.14
+
+- Fixed custom syntax regression (by @43081j).
+
 ## 8.5.13
 
 - Fixed `postcss-scss` commend regression.
